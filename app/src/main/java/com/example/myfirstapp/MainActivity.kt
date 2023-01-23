@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley
 import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.fragments.MainFragment
 
-const val API_KEY = "f09fa315f1404595a9e123021223110"
+const val API_KEY = "a5e049379e664ccb9c685958232201"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
