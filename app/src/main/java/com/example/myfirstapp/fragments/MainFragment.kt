@@ -17,6 +17,7 @@ import com.example.myfirstapp.R
 import com.example.myfirstapp.adapters.VpAdapter
 import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.databinding.FragmentMainBinding
+import com.example.myfirstapp.fragments.MainFragment.Companion.newInstance
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -24,12 +25,12 @@ class MainFragment : Fragment() {
     private val flist = listOf(
         HoursFragment.newInstance(),
         DaysFragment.newInstance(),
-        ExtensesFragment.newInstance()
+        ExpenseFragment.newInstance(),
     )
     private val tlist = listOf(
         "Hours",
         "Days",
-        "Extenses"
+        "Expenses"
     )
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var binding: FragmentMainBinding
