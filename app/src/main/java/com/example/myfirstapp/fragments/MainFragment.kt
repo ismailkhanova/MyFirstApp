@@ -1,5 +1,4 @@
 package com.example.myfirstapp.fragments
-
 import android.Manifest
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import com.example.myfirstapp.MainActivity
 import com.example.myfirstapp.R
 import com.example.myfirstapp.adapters.VpAdapter
 import com.example.myfirstapp.databinding.ActivityMainBinding
@@ -22,19 +23,19 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainFragment : Fragment() {
-    private val flist = listOf(
+    private val fList = listOf(
         HoursFragment.newInstance(),
         DaysFragment.newInstance(),
         ExpenseFragment.newInstance(),
     )
-    private val tlist = listOf(
+    private val tList = listOf(
         "Hours",
         "Days",
         "Expenses"
     )
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var binding: FragmentMainBinding
-    private lateinit var CarAnimation: Annotation
+    private lateinit var carAnimation: Annotation
 
 
     override fun onCreateView(
@@ -49,13 +50,26 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         init()
+
+        val button = view.findViewById<ImageButton>(R.id.ibWashesMap)
+        button.setOnClickListener {
+            val mapsFragment = MapsFragment()
+
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, mapsFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
+
+
+
     private fun init() = with(binding) {
-        val adapter = VpAdapter(activity as FragmentActivity, flist)
+        val adapter = VpAdapter(activity as FragmentActivity, fList)
         vp.adapter = adapter
         TabLayoutMediator(tabLayout, vp){
-            tab, pos -> tab.text = tlist[pos]
+            tab, pos -> tab.text = tList[pos]
         }.attach()
     }
 
