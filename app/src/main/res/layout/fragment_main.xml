@@ -143,6 +143,7 @@
                 android:id="@+id/ibWashesMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
                 android:src="@drawable/location_wash"
                 app:layout_constraintBottom_toBottomOf="@+id/imWeather"
                 app:layout_constraintEnd_toStartOf="@+id/imWeather"

@@ -26,7 +26,7 @@ class MainFragment : Fragment() {
     private val fList = listOf(
         HoursFragment.newInstance(),
         DaysFragment.newInstance(),
-        ExpenseFragment.newInstance(),
+        ExpenseListFragment.newInstance(),
     )
     private val tList = listOf(
         "Hours",
