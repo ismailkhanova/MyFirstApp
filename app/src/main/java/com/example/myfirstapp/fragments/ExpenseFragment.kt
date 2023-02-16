@@ -51,15 +51,6 @@ class ExpenseFragment : Fragment() {
         val amountEditText = view.findViewById<EditText>(R.id.amount_edit_text)
         val noteEditText = view.findViewById<EditText>(R.id.note_edit_text)
         val dateTextView = view.findViewById<TextView>(R.id.date_text_view)
-        val viewExpensesButton = view.findViewById<Button>(R.id.view_expenses_button)
-
-        viewExpensesButton.setOnClickListener {
-            val expenseListFragment = ExpenseListFragment()
-            val fragmentTransaction = this@ExpenseFragment.parentFragmentManager.beginTransaction()
-            fragmentTransaction?.replace(R.id.fragment_container, expenseListFragment)
-            fragmentTransaction?.addToBackStack(null)
-            fragmentTransaction?.commit()
-        }
 
         val saveExpenseButton = view.findViewById<Button>(R.id.save_button)
         saveExpenseButton.setOnClickListener {
@@ -74,11 +65,13 @@ class ExpenseFragment : Fragment() {
 
             amountEditText.setText("")
             noteEditText.setText("")
+
+            // Close the current fragment and return to the ExpenseListFragment
+            parentFragmentManager.popBackStack()
         }
 
         return view
     }
-
 
     companion object {
 
@@ -87,4 +80,5 @@ class ExpenseFragment : Fragment() {
             ExpenseFragment()
     }
 }
+
 

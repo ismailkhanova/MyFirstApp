@@ -5,11 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
 import com.example.myfirstapp.adapters.ExpenseAdapter
 import com.example.myfirstapp.adapters.ExpenseDataStore
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentTransaction
+
 
 class ExpenseListFragment : Fragment() {
 
@@ -31,6 +35,17 @@ class ExpenseListFragment : Fragment() {
         expensesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         expensesRecyclerView.adapter = ExpenseAdapter(expenses)
 
+        val addExpenseButton = view.findViewById<ImageButton>(R.id.imageButton4)
+        addExpenseButton.setOnClickListener {
+            val expenseFragment = ExpenseFragment()
+
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            transaction.add(android.R.id.content, expenseFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return view
     }
 
@@ -40,3 +55,4 @@ class ExpenseListFragment : Fragment() {
             ExpenseListFragment()
     }
 }
+
