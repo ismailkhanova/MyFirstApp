@@ -1,0 +1,53 @@
+[33mcommit 71d1bc1fa673d9b71cfb5258de2eb2c9ecad0040[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Wed Mar 1 23:36:59 2023 +0600
+
+    CorrectAddExpenses
+
+[33mcommit 22a064da3f23ca76aaa62f174fd6766b53bd80dd[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Sat Feb 25 01:24:22 2023 +0600
+
+    MarkLocation
+
+[33mcommit 23dd57f0f32731bea3420c58b6c4e51f8374e810[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Fri Feb 24 20:30:19 2023 +0600
+
+    myLocationMaps
+
+[33mcommit b57f2bc276ad1dc0712dfec5f5c8a3d4fa574cf1[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Thu Feb 16 23:32:25 2023 +0600
+
+    addexpenses2
+
+[33mcommit 55c3428cde1f2b75c4bf56348b2f1ee937d48cae[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Thu Feb 16 21:20:44 2023 +0600
+
+    addexpense1
+
+[33mcommit 8829636f2b11a2768379292dfe2febc323f51f69[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Wed Feb 15 23:32:54 2023 +0600
+
+    Google maps basic config
+
+[33mcommit f03cf99e7cf1ea2f973fb5241f87973878abfff1[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Thu Feb 9 10:16:40 2023 +0600
+
+    expenses_beforeMaps
+
+[33mcommit 03d1fb152c3b4c6b7df046a9ac744373e77eefeb[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Mon Jan 23 22:10:41 2023 +0600
+
+    RecyclerViewHours
+
+[33mcommit e494523de3ef6f081c5f92fbf83de1f0758d67dc[m
+Author: ismailkhanova <ismailkhanova_i@iuca.kg>
+Date:   Fri Jan 20 20:39:36 2023 +0600
+
+    first commit
