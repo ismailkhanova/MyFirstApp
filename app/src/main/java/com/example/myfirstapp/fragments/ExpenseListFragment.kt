@@ -13,15 +13,20 @@ import com.example.myfirstapp.adapters.ExpenseAdapter
 import com.example.myfirstapp.adapters.ExpenseDataStore
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.myfirstapp.MainActivity
+import com.example.myfirstapp.adapters.ExpenseDataChangeListener
 
 
-class ExpenseListFragment : Fragment() {
+class ExpenseListFragment : Fragment(), ExpenseDataChangeListener {
 
     private lateinit var expenseDataStore: ExpenseDataStore
+    private lateinit var expensesRecyclerView: RecyclerView
+    private lateinit var expenseAdapter: ExpenseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        expenseDataStore = ExpenseDataStore(requireContext())
+        val mainActivity = requireActivity() as MainActivity
+        expenseDataStore = mainActivity.expenseDataStore
     }
 
     override fun onCreateView(
@@ -30,10 +35,12 @@ class ExpenseListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_expense_list, container, false)
 
-        val expenses = expenseDataStore.getExpenses()
-        val expensesRecyclerView = view.findViewById<RecyclerView>(R.id.expenses_recycler_view)
+        expensesRecyclerView = view.findViewById(R.id.expenses_recycler_view)
         expensesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        expensesRecyclerView.adapter = ExpenseAdapter(expenses)
+
+        val expenses = expenseDataStore.getExpenses()
+        expenseAdapter = ExpenseAdapter(expenses)
+        expensesRecyclerView.adapter = expenseAdapter
 
         val addExpenseButton = view.findViewById<ImageButton>(R.id.imageButton4)
         addExpenseButton.setOnClickListener {
@@ -49,10 +56,24 @@ class ExpenseListFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        expenseDataStore.setListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        expenseDataStore.setListener(null)
+    }
+
+    override fun onExpenseDataChanged() {
+        val expenses = expenseDataStore.getExpenses()
+        expenseAdapter.expenses = expenses
+        expenseAdapter.notifyDataSetChanged()
+    }
+
     companion object {
-        @JvmStatic
-        fun newInstance() =
-            ExpenseListFragment()
+        fun newInstance() = ExpenseListFragment()
     }
 }
-

@@ -1,24 +1,5 @@
 package com.example.myfirstapp.fragments
 
-//import android.os.Bundle
-//import androidx.fragment.app.Fragment
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import com.example.myfirstapp.R
-//
-//
-//class ExtensesFragment : Fragment() {
-//
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_extenses, container, false)
-//    }
-//
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myfirstapp.Expense
+import com.example.myfirstapp.MainActivity
 import com.example.myfirstapp.R
+import com.example.myfirstapp.adapters.ExpenseDataChangeListener
 import com.example.myfirstapp.adapters.ExpenseDataStore
 
 class ExpenseFragment : Fragment() {
@@ -39,7 +22,8 @@ class ExpenseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        expenseDataStore = ExpenseDataStore(requireContext())
+        val mainActivity = requireActivity() as MainActivity
+        expenseDataStore = mainActivity.expenseDataStore
     }
 
     override fun onCreateView(
@@ -74,11 +58,6 @@ class ExpenseFragment : Fragment() {
     }
 
     companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            ExpenseFragment()
+        fun newInstance() = ExpenseFragment()
     }
 }
-
-

@@ -6,17 +6,28 @@ import com.example.myfirstapp.Expense
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+
+interface ExpenseDataChangeListener {
+    fun onExpenseDataChanged()
+}
+
 class ExpenseDataStore(private val context: Context) {
 
     private val expenses = mutableListOf<Expense>()
+    private var listener: ExpenseDataChangeListener? = null
 
     fun addExpense(expense: Expense) {
         expenses.add(expense)
         saveExpenses()
+        listener?.onExpenseDataChanged()
     }
 
     fun getExpenses(): List<Expense> {
         return expenses
+    }
+
+    fun setListener(listener: ExpenseDataChangeListener?) {
+        this.listener = listener
     }
 
     private fun saveExpenses() {
@@ -38,6 +49,3 @@ class ExpenseDataStore(private val context: Context) {
         }
     }
 }
-
-
-
