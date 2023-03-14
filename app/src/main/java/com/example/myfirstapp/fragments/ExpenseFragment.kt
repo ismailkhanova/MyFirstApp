@@ -10,20 +10,17 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.myfirstapp.Expense
-import com.example.myfirstapp.MainActivity
-import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.ExpenseDataChangeListener
-import com.example.myfirstapp.adapters.ExpenseDataStore
+import com.example.myfirstapp.*
+import com.example.myfirstapp.adapters.ExpenseAdapter
+
 
 class ExpenseFragment : Fragment() {
 
-    private lateinit var expenseDataStore: ExpenseDataStore
+    private lateinit var expenseAdapter: ExpenseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val mainActivity = requireActivity() as MainActivity
-        expenseDataStore = mainActivity.expenseDataStore
+
     }
 
     override fun onCreateView(
@@ -31,6 +28,7 @@ class ExpenseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_expense, container, false)
+
 
         val amountEditText = view.findViewById<EditText>(R.id.amount_edit_text)
         val noteEditText = view.findViewById<EditText>(R.id.note_edit_text)
@@ -41,9 +39,21 @@ class ExpenseFragment : Fragment() {
             val amount = amountEditText.text.toString().toDouble()
             val note = noteEditText.text.toString()
             val date = dateTextView.text.toString()
-            val expense = Expense(amount, note, date)
 
-            expenseDataStore.addExpense(expense)
+            val expense = Expense(
+                amount = amount,
+                note = note,
+                date = date ?: "",
+            )
+
+            val entity = ExpenseEntity(
+                amount = amount,
+                note = note,
+                date = date ?: "",
+            )
+
+            MainApplication.expenseDao?.addExpense(entity)
+            expenseAdapter.add(expense)
 
             Toast.makeText(requireContext(), "Expense saved!", Toast.LENGTH_SHORT).show()
 
@@ -58,6 +68,8 @@ class ExpenseFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = ExpenseFragment()
+        fun newInstance(expenseAdapter: ExpenseAdapter) = ExpenseFragment().apply {
+            this.expenseAdapter = expenseAdapter
+        }
     }
 }

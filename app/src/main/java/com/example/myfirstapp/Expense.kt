@@ -5,4 +5,5 @@ data class Expense(
     val note: String,
     val date: String,
 
-)
+    )
+
