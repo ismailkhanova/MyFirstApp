@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.adapters
 
 data class Expense(
     val amount: Double,

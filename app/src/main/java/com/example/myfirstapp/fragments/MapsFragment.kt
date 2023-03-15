@@ -26,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.myfirstapp.R
+import com.example.myfirstapp.adapters.PlaceResult
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -39,11 +40,19 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import okhttp3.*
+import java.io.IOException
+import java.util.*
+
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val apiKey = "AIzaSyD-eGtdg9wWO0rv0jb2rlDdzB2sP2o1H8s" // Замените на свой API ключ
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
@@ -90,7 +99,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     // Create a LatLng object from the location
                     val userLocation = LatLng(location.latitude, location.longitude)
 
-
                     // Add a marker at the user's location
                     googleMap.addMarker(
                         MarkerOptions().position(userLocation).title("Your Location")
@@ -99,54 +107,63 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     // Move the camera to the user's location
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
 
-                    val markerLocation = LatLng(42.838914, 75.297205)
-                    googleMap.addMarker(
-                        MarkerOptions().position(markerLocation).title("CARWASH"))
-
-                    val placesClient = Places.createClient(requireContext())
-                    val request = FindCurrentPlaceRequest.newInstance(
-                        listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.TYPES)
-                    )
-                    placesClient.findCurrentPlace(request).addOnSuccessListener { response: FindCurrentPlaceResponse ->
-                        // Filter the response to include only car washes
-                        val carWashTypes = listOf(Place.Type.UNIVERSITY)
-                        val carWashes = response.placeLikelihoods.filter { it.place.types.intersect(carWashTypes).isNotEmpty() }
-
-                        // Sort the car washes by distance from the user's location
-                        val sortedCarWashes = carWashes.sortedBy { placeLikelihood ->
-                            val carWashLocation = placeLikelihood.place.latLng
-                            if (carWashLocation != null) {
-                                val carWashLocationAsLocation = Location("").apply {
-                                    latitude = carWashLocation.latitude
-                                    longitude = carWashLocation.longitude
-                                }
-                                location.distanceTo(carWashLocationAsLocation)
-                            } else {
-                                Float.MAX_VALUE
-                            }
-                        }
-
-                        Log.d("MapsFragment", "Found ${sortedCarWashes.size} car washes")
-
-
-
-                        // Add markers for the 3 closest car washes
-                        sortedCarWashes.take(3).forEach { placeLikelihood ->
-                            val carWash = placeLikelihood.place
-                            val carWashLocation = carWash.latLng
-                            if (carWashLocation != null) {
-                                val marker = googleMap.addMarker(MarkerOptions().position(carWashLocation).title(carWash.name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
-                                Log.d("MapsFragment", "Adding marker for car wash at $carWashLocation")
-                                marker?.tag = carWash
-                            }
-                        }
-                    }
-
+                    // Fetch nearby car washes
+                    fetchNearbyPlaces(userLocation, "car_wash")
                 }
             }
         } else {
             // Request location permission
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+    }
+
+    private fun fetchNearbyPlaces(location: LatLng, placeType: String) {
+        val httpClient = OkHttpClient()
+        val urlString =
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.latitude},${location.longitude}&radius=5000&type=$placeType&key=$apiKey"
+
+        val request = Request.Builder()
+            .url(urlString)
+            .build()
+
+        httpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("MapsFragment", "Error fetching nearby places: $e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    if (responseBody != null) {
+                        val gson = Gson()
+                        val jsonObject = gson.fromJson(responseBody, JsonObject::class.java)
+                        val results = jsonObject.getAsJsonArray("results")
+
+                        activity?.runOnUiThread {
+                            results.forEach { result ->
+                                val place = gson.fromJson(result, PlaceResult::class.java)
+                                val placeLocation =
+                                    LatLng(place.geometry.location.lat, place.geometry.location.lng)
+                                val marker = googleMap.addMarker(
+                                    MarkerOptions().position(placeLocation).title(place.name)
+                                        .icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_GREEN
+                                            )
+                                        )
+                                )
+                                Log.d(
+                                    "MapsFragment",
+                                    "Adding marker for ${placeType.lowercase(Locale.ROOT)} at $placeLocation"
+                                )
+                                marker?.tag = place
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("MapsFragment", "Error fetching nearby places: ${response.code}")
+                }
+            }
+        })
     }
 }

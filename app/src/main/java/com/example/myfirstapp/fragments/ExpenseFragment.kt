@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myfirstapp.*
+import com.example.myfirstapp.adapters.Expense
 import com.example.myfirstapp.adapters.ExpenseAdapter
 
 

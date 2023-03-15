@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myfirstapp.Expense
 import com.example.myfirstapp.R
 import kotlinx.android.synthetic.main.fragment_expense.view.date_text_view
 import kotlinx.android.synthetic.main.item_expense.view.*
