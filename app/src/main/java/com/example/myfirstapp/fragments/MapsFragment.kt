@@ -25,8 +25,12 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.myfirstapp.R
+import com.example.myfirstapp.adapters.OpeningHours
+import com.example.myfirstapp.adapters.Period
 import com.example.myfirstapp.adapters.PlaceResult
+import com.example.myfirstapp.adapters.Time
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -42,6 +46,7 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonElement
 import okhttp3.*
 import java.io.IOException
 import java.util.*
@@ -51,6 +56,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var carWashInfoFragment: CarWashInfoFragment
 
     private val apiKey = "AIzaSyD-eGtdg9wWO0rv0jb2rlDdzB2sP2o1H8s" // Замените на свой API ключ
 
@@ -84,6 +90,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 
+        carWashInfoFragment = CarWashInfoFragment()
+
         // Check for location permission
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -115,7 +123,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             // Request location permission
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+
+        googleMap.setOnInfoWindowClickListener { marker ->
+            val place = marker.tag as? PlaceResult
+            if (place != null) {
+                showCarWashInfo(place)
+            }
+        }
     }
+
 
     private fun fetchNearbyPlaces(location: LatLng, placeType: String) {
         val httpClient = OkHttpClient()
@@ -141,9 +157,26 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                         activity?.runOnUiThread {
                             results.forEach { result ->
-                                val place = gson.fromJson(result, PlaceResult::class.java)
-                                val placeLocation =
-                                    LatLng(place.geometry.location.lat, place.geometry.location.lng)
+                                val name = result.getAsJsonObject().get("name").asString
+                                val geometry = result.getAsJsonObject().get("geometry")
+                                val location = geometry.getAsJsonObject().get("location")
+                                val lat = location.getAsJsonObject().get("lat").asDouble
+                                val lng = location.getAsJsonObject().get("lng").asDouble
+                                val address = result.getAsJsonObject().get("vicinity")?.asString
+
+                                val openingHours = null
+
+                                val rating = result.getAsJsonObject().get("rating")?.asFloat
+
+                                val place = PlaceResult(
+                                    PlaceResult.Geometry(PlaceResult.Geometry.Location(lat, lng)),
+                                    name,
+                                    address,
+                                    openingHours,
+                                    rating
+                                )
+
+                                val placeLocation = LatLng(place.geometry.location.lat, place.geometry.location.lng)
                                 val marker = googleMap.addMarker(
                                     MarkerOptions().position(placeLocation).title(place.name)
                                         .icon(
@@ -165,5 +198,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         })
+    }
+
+    private fun showCarWashInfo(place: PlaceResult) {
+        val carWashInfoFragment = CarWashInfoFragment.newInstance(place)
+
+        childFragmentManager.commit {
+            setCustomAnimations(
+                R.anim.slide_in_up,
+                R.anim.slide_out_down,
+                R.anim.slide_in_down,
+                R.anim.slide_out_up
+            )
+            add(R.id.info_container, carWashInfoFragment)
+            addToBackStack(null)
+        }
     }
 }
