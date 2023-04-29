@@ -16,7 +16,6 @@ package com.example.myfirstapp.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,10 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.OpeningHours
-import com.example.myfirstapp.adapters.Period
 import com.example.myfirstapp.adapters.PlaceResult
-import com.example.myfirstapp.adapters.Time
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -40,13 +36,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.google.gson.JsonElement
 import okhttp3.*
 import java.io.IOException
 import java.util.*
@@ -104,18 +95,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             // Get the user's current location
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 if (location != null) {
-                    // Create a LatLng object from the location
                     val userLocation = LatLng(location.latitude, location.longitude)
-
                     // Add a marker at the user's location
                     googleMap.addMarker(
                         MarkerOptions().position(userLocation).title("Your Location")
                     )
-
-                    // Move the camera to the user's location
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-
-                    // Fetch nearby car washes
                     fetchNearbyPlaces(userLocation, "car_wash")
                 }
             }

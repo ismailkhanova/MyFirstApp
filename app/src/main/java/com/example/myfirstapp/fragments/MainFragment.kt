@@ -1,24 +1,19 @@
 package com.example.myfirstapp.fragments
+import HoursFragment
 import android.Manifest
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.example.myfirstapp.MainActivity
 import com.example.myfirstapp.R
 import com.example.myfirstapp.adapters.VpAdapter
-import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.databinding.FragmentMainBinding
-import com.example.myfirstapp.fragments.MainFragment.Companion.newInstance
 import com.google.android.material.tabs.TabLayoutMediator
 
 

@@ -8,6 +8,4 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val expenseDao: ExpenseDao
-
-
 }
