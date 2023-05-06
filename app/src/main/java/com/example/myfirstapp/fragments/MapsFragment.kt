@@ -49,7 +49,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var carWashInfoFragment: CarWashInfoFragment
 
-    private val apiKey = "AIzaSyD-eGtdg9wWO0rv0jb2rlDdzB2sP2o1H8s" // Замените на свой API ключ
+    private val apiKey = "AIzaSyAfktwnw6kIIU_7D8lO86HtnSthDjPk6oQ" // Замените на свой API ключ
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =

@@ -34,27 +34,26 @@ class HoursFragment : Fragment() {
                 "","21:00",
                 "Cloudy","",
                 "-16ºC", "", "","",
-                "", "",""),
+                "", ""),
             WeatherModel(
                 "","22:00",
                 "Cloudy","",
-                "-15ºC", "", "","", "", "",
-                ""),
+                "-15ºC", "", "","", "", ""),
             WeatherModel(
                 "","23:00",
                 "Cloudy","",
                 "-16ºC", "", "","",
-                "", "", ""),
+                "", ""),
             WeatherModel(
                 "","00:00",
                 "Cloudy","",
                 "-16ºC", "", "","",
-                "", "", ""),
+                "", ""),
             WeatherModel(
                 "","1:00",
                 "Cloudy","",
                 "-17ºC", "", "","",
-                "", "", "")
+                "", "")
         )
         adapter.submitList(list)
     }
