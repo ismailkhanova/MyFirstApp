@@ -71,6 +71,7 @@ class MainFragment : Fragment() {
         checkPermission()
         init()
         updateCurrentCard()
+        displayCarWashRecommendation()
 
         val button = view.findViewById<ImageButton>(R.id.ibWashesMap)
         button.setOnClickListener {
@@ -201,10 +202,17 @@ class MainFragment : Fragment() {
         queue.add(request)
     }
 
+    private fun displayCarWashRecommendation() {
+        model.liveDataCarWashRecommendation.observe(viewLifecycleOwner) { recommendation ->
+            binding.tvCarWashRecommendation.text = recommendation
+        }
+    }
+
     private fun parseWeatherData(result: String) {
         val mainObject = JSONObject(result)
         val list = parseDays(mainObject)
         parseCurrentData(mainObject, list[0])
+        model.generateCarWashRecommendation(list)
 
     }
 
