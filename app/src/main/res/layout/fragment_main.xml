@@ -8,7 +8,6 @@
     tools:context=".fragments.MainFragment">
 
 
-
     <ImageView
         android:id="@+id/background"
         android:layout_width="wrap_content"
@@ -54,28 +53,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/belgrano"
                 android:text="07/11/2022 23:30"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ch_rain"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tvMaxMin"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.858" />
-
-            <ImageView
                 android:id="@+id/imWeather"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_launcher_foreground"
@@ -86,8 +72,8 @@
                 android:id="@+id/tvCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:inputType="textMultiLine"
-                android:fontFamily="@font/belgrano"
                 android:maxLength="30"
                 android:text="Tokmok"
                 android:textColor="#FFFFFF"
@@ -100,7 +86,7 @@
                 android:id="@+id/tvCurrenttemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/belgrano"
+                android:fontFamily="sans-serif"
                 android:text="2°C"
                 android:textColor="#FFFFFF"
                 android:textSize="60sp"
@@ -112,7 +98,7 @@
                 android:id="@+id/tvCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/belgrano"
+                android:fontFamily="sans-serif"
                 android:text="Sunny"
                 android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +109,7 @@
                 android:id="@+id/tvMaxMin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/belgrano"
+                android:fontFamily="sans-serif"
                 android:text="3°C/-12°C"
                 android:textColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -135,10 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="10dp"
                 android:background="@null"
                 android:src="@drawable/search_button"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvMaxMin" />
 
@@ -150,21 +134,9 @@
                 android:background="@null"
                 android:src="@drawable/cloud_sync_button"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/tvMaxMin"
                 app:layout_constraintTop_toTopOf="@+id/ibSearch" />
-
-            <TextView
-                android:id="@+id/tvCarWashRecommendation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/belgrano"
-                android:text="Рекомендация о мойке автомобиля"
-                android:textColor="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMaxMin" />
 
             <ImageButton
                 android:id="@+id/ibWashesMap"
@@ -178,6 +150,39 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imWeather"
                 app:layout_constraintVertical_bias="0.375" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/card_blue_bg"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMaxMin">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvCarWashRecommendation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today is a good day to wash your car."
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -218,12 +223,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+    </androidx.viewpager2.widget.ViewPager2>
+
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
