@@ -21,4 +21,7 @@ interface ExpenseDao {
 
     @Query("DELETE FROM expense_table WHERE id =:id")
     fun deleteExpenses (id:Int)
+
+    @Query("SELECT SUM(amount) FROM expense_table")
+    fun getTotalExpense(): Double
 }

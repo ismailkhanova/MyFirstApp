@@ -1,11 +1,13 @@
 package com.example.myfirstapp.fragments
 
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +40,26 @@ class ExpenseListFragment : Fragment() {
             transaction.commit()
         }
 
+        val showTotalButton = view.findViewById<Button>(R.id.show_total_button)
+        showTotalButton.setOnClickListener {
+            showTotalExpenseDialog()
+        }
+
         return view
+    }
+
+    private fun showTotalExpenseDialog() {
+        val totalExpense = MainApplication.expenseDao?.getTotalExpense()
+
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+            .setTitle("Total Expense")
+            .setMessage("Total Expense: $totalExpense")
+            .setPositiveButton("Close") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

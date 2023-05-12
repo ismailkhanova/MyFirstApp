@@ -138,12 +138,14 @@
                 app:layout_constraintStart_toEndOf="@+id/tvMaxMin"
                 app:layout_constraintTop_toTopOf="@+id/ibSearch" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/ibWashesMap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:src="@drawable/location_wash"
+                android:layout_width="34dp"
+                android:layout_height="36dp"
+                android:background="@drawable/location_wash"
+                app:backgroundTint="@null"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="@+id/imWeather"
                 app:layout_constraintEnd_toStartOf="@+id/imWeather"
                 app:layout_constraintHorizontal_bias="0.968"

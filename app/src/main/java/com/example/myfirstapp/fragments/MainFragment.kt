@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -73,7 +74,7 @@ class MainFragment : Fragment() {
         updateCurrentCard()
         displayCarWashRecommendation()
 
-        val button = view.findViewById<ImageButton>(R.id.ibWashesMap)
+        val button = view.findViewById<Button>(R.id.ibWashesMap)
         button.setOnClickListener {
             val mapsFragment = MapsFragment()
 
@@ -94,6 +95,7 @@ class MainFragment : Fragment() {
         fLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         val adapter = VpAdapter(activity as FragmentActivity, fList)
         vp.adapter = adapter
+        vp.isUserInputEnabled = false
         TabLayoutMediator(tabLayout, vp){
             tab, pos -> tab.text = tList[pos]
         }.attach()
