@@ -19,6 +19,6 @@ interface ExpenseDao {
     @Delete
     fun deleteExpenses(expense: ExpenseEntity)
 
-    @Query("DELETE FROM EXPENSE_TABLE WHERE id =:id")
+    @Query("DELETE FROM expense_table WHERE id =:id")
     fun deleteExpenses (id:Int)
 }

@@ -45,7 +45,7 @@ class ExpenseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         expenseAdapter = ExpenseAdapter()
         initViews()
-        initList()
+//        initList()
 
     }
 
@@ -63,6 +63,7 @@ class ExpenseListFragment : Fragment() {
         val entities = MainApplication.expenseDao?.getExpenses()
         val expenses = entities?.map {
             Expense(
+                id = it.id,
                 amount = it.amount,
                 note = it.note,
                 date = it.date
@@ -77,77 +78,4 @@ class ExpenseListFragment : Fragment() {
         fun newInstance() = ExpenseListFragment()
     }
 }
-
-//class ExpenseListFragment : Fragment() {
-//
-//    private lateinit var expensesRecyclerView: RecyclerView
-//    private lateinit var expenseAdapter: ExpenseAdapter
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        val mainActivity = requireActivity() as MainActivity
-//    }
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        val view = inflater.inflate(R.layout.fragment_expense_list, container, false)
-//
-//        expensesRecyclerView = view.findViewById(R.id.expenses_recycler_view)
-//
-//
-//
-//
-//        val addExpenseButton = view.findViewById<ImageButton>(R.id.imageButton4)
-//        addExpenseButton.setOnClickListener {
-//            val expenseFragment = ExpenseFragment()
-//
-//            val transaction = parentFragmentManager.beginTransaction()
-//            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//            transaction.add(android.R.id.content, expenseFragment)
-//            transaction.addToBackStack(null)
-//            transaction.commit()
-//        }
-//
-//        return view
-//    }
-//
-//    fun addExpense(expense: Expense) {
-//        expenseAdapter.add(expense)
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        expenseAdapter = ExpenseAdapter()
-//        initViews()
-//        initList()
-//
-//    }
-//
-//    private fun initViews() {
-//        expensesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        expensesRecyclerView.adapter = expenseAdapter
-//    }
-//
-//    private fun initList() {
-//        val entities = MainApplication.expenseDao?.getExpenses()
-//        val expenses = entities?.map {
-//            Expense(
-//                amount = it.amount,
-//                note = it.note,
-//                date = it.date
-//            )
-//        }
-//        expenses?.let {
-//            expenseAdapter.add(it)
-//            expenseAdapter.notifyDataSetChanged()
-//        }
-//
-//    }
-//
-//    companion object {
-//        fun newInstance() = ExpenseListFragment()
-//    }
-//}
 
