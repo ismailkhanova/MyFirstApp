@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myfirstapp.ExpenseEntity
-import com.example.myfirstapp.MainApplication
+import com.example.myfirstapp.data.MainApplication
 import com.example.myfirstapp.R
+import com.example.myfirstapp.data.Expense
 import kotlinx.android.synthetic.main.fragment_expense.view.date_text_view
 import kotlinx.android.synthetic.main.item_expense.view.*
 

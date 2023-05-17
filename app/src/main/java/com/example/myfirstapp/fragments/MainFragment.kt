@@ -12,12 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
@@ -28,10 +26,9 @@ import com.example.myfirstapp.DialogManager
 import com.example.myfirstapp.MainViewModel
 import com.example.myfirstapp.R
 import com.example.myfirstapp.adapters.VpAdapter
-import com.example.myfirstapp.adapters.WeatherModel
+import com.example.myfirstapp.data.WeatherModel
 import com.example.myfirstapp.databinding.FragmentMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -245,7 +242,7 @@ class MainFragment : Fragment() {
         return list
     }
 
-    private fun parseCurrentData(mainObject:JSONObject, weatherItem:WeatherModel){
+    private fun parseCurrentData(mainObject:JSONObject, weatherItem: WeatherModel){
         val item = WeatherModel(
             mainObject.getJSONObject("location").getString("name"),
             mainObject.getJSONObject("current").getString("last_updated"),

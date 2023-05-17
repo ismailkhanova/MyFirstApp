@@ -2,7 +2,7 @@ package com.example.myfirstapp
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myfirstapp.adapters.WeatherModel
+import com.example.myfirstapp.data.WeatherModel
 
 //class MainViewModel: ViewModel() {
 //    val liveDataCurrent = MutableLiveData<WeatherModel>()

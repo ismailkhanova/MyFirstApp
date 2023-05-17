@@ -1,7 +1,4 @@
-package com.example.myfirstapp.adapters
-
-import java.time.temporal.Temporal
-import java.util.concurrent.locks.Condition
+package com.example.myfirstapp.data
 
 //data class WeatherModel(
 //    val city: String,

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.WeatherModel
+import com.example.myfirstapp.data.WeatherModel
 import com.example.myfirstapp.databinding.ListItemBinding
 import com.squareup.picasso.Picasso
 
@@ -53,6 +53,6 @@ class WeatherAdapter(val listener:Listener?) : ListAdapter<WeatherModel, Weather
     }
 
     interface Listener{
-        fun onClick(item:WeatherModel)
+        fun onClick(item: WeatherModel)
     }
 }

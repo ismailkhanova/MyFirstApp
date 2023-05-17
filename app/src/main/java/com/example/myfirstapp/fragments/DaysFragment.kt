@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.MainViewModel
-import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.WeatherModel
+import com.example.myfirstapp.data.WeatherModel
 import com.example.myfirstapp.databinding.FragmentDaysBinding
 
 

@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.adapters.ExpenseAdapter
 import androidx.fragment.app.FragmentTransaction
 import com.example.myfirstapp.*
-import com.example.myfirstapp.adapters.Expense
+import com.example.myfirstapp.data.Expense
+import com.example.myfirstapp.data.MainApplication
 
 class ExpenseListFragment : Fragment() {
 

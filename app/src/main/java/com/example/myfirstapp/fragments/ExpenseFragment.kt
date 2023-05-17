@@ -11,8 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myfirstapp.*
-import com.example.myfirstapp.adapters.Expense
+import com.example.myfirstapp.data.Expense
 import com.example.myfirstapp.adapters.ExpenseAdapter
+import com.example.myfirstapp.data.ExpenseEntity
+import com.example.myfirstapp.data.MainApplication
 
 
 class ExpenseFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.example.myfirstapp.adapters
+package com.example.myfirstapp.data
 
 data class Expense(
     val id: Int? = null,

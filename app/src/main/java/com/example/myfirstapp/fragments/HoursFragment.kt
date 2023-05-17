@@ -1,5 +1,4 @@
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.MainViewModel
-import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.WeatherModel
+import com.example.myfirstapp.data.WeatherModel
 import com.example.myfirstapp.databinding.FragmentHoursBinding
 import org.json.JSONArray
 import org.json.JSONObject
@@ -42,7 +40,7 @@ class HoursFragment : Fragment() {
 
     }
 
-    private fun getHoursList(wItem:WeatherModel): List<WeatherModel>{
+    private fun getHoursList(wItem: WeatherModel): List<WeatherModel>{
         val hoursArray = JSONArray(wItem.hours)
         val list = ArrayList<WeatherModel>()
         for (i in 0 until hoursArray.length()){

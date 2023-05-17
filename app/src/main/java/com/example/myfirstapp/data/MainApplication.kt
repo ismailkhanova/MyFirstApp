@@ -1,8 +1,7 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.data
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
 
 class MainApplication: Application() {
 
