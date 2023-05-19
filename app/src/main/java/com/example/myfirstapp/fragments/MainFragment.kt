@@ -89,12 +89,13 @@ class MainFragment : Fragment() {
 
 
     private fun init() = with(binding) {
+        progressBar.visibility = View.VISIBLE
         fLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         val adapter = VpAdapter(activity as FragmentActivity, fList)
         vp.adapter = adapter
         vp.isUserInputEnabled = false
         TabLayoutMediator(tabLayout, vp){
-            tab, pos -> tab.text = tList[pos]
+                tab, pos -> tab.text = tList[pos]
         }.attach()
         ibSync.setOnClickListener {
             tabLayout.selectTab(tabLayout.getTabAt(0))
@@ -152,14 +153,17 @@ class MainFragment : Fragment() {
 
     private fun updateCurrentCard() = with(binding){
         model.liveDataCurrent.observe(viewLifecycleOwner){
-             val maxMinTemp = "${it.maxTemp}°C/${it.minTemp}°C"
+            val maxMinTemp = "${it.maxTemp}°C/${it.minTemp}°C"
             tvData.text = it.time
             tvCity.text = it.city
             tvCurrenttemp.text = it.currentTemp.ifEmpty { maxMinTemp }
             tvCondition.text = it.condition
             tvMaxMin.text = if(it.currentTemp.isEmpty()) "" else maxMinTemp
             Picasso.get().load("https:" + it.imageUrl).into(imWeather)
+            progressBar.visibility = View.GONE
+
         }
+
     }
 
     private fun permissionListener(){
@@ -191,10 +195,10 @@ class MainFragment : Fragment() {
             Request.Method.GET,
             url,
             {
-                result -> parseWeatherData(result)
+                    result -> parseWeatherData(result)
             },
             {
-                error -> Log.d("MyLog", "Error: $error")
+                    error -> Log.d("MyLog", "Error: $error")
             }
 
         )
@@ -242,7 +246,7 @@ class MainFragment : Fragment() {
         return list
     }
 
-    private fun parseCurrentData(mainObject:JSONObject, weatherItem: WeatherModel){
+    private fun parseCurrentData(mainObject:JSONObject, weatherItem:WeatherModel){
         val item = WeatherModel(
             mainObject.getJSONObject("location").getString("name"),
             mainObject.getJSONObject("current").getString("last_updated"),
@@ -271,3 +275,4 @@ class MainFragment : Fragment() {
 
     }
 }
+

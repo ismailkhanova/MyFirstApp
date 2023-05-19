@@ -153,6 +153,21 @@
                 app:layout_constraintTop_toTopOf="@+id/imWeather"
                 app:layout_constraintVertical_bias="0.375" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="51dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@android:color/white"
+                android:progress="50"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/tvCity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.782" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardRec"
                 android:layout_width="match_parent"
@@ -177,11 +192,13 @@
                         android:text="Today is a good day to wash your car."
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
+                        android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.cardview.widget.CardView>
 
@@ -235,7 +252,4 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-
-
 </androidx.constraintlayout.motion.widget.MotionLayout>
