@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.myfirstapp.DialogManager
@@ -34,10 +35,16 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import org.json.JSONObject
+import java.io.IOException
+import okhttp3.Request
 
 
-const val API_KEY = "2fdf1fc749e04138b12135817232904"
+const val API_KEY = "988e861aaa864e25abe84204231805"
 
 class MainFragment : Fragment() {
     private lateinit var fLocationClient: FusedLocationProviderClient
@@ -151,21 +158,24 @@ class MainFragment : Fragment() {
             }
     }
 
-    private fun updateCurrentCard() = with(binding){
-        model.liveDataCurrent.observe(viewLifecycleOwner){
-            val maxMinTemp = "${it.maxTemp}°C/${it.minTemp}°C"
-            tvData.text = it.time
-            tvCity.text = it.city
-            tvCurrenttemp.text = it.currentTemp.ifEmpty { maxMinTemp }
-            tvCondition.text = it.condition
-            tvMaxMin.text = if(it.currentTemp.isEmpty()) "" else maxMinTemp
-            Picasso.get().load("https:" + it.imageUrl).into(imWeather)
+    private fun updateCurrentCard() = with(binding) {
+        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
+            val maxMinTemp = "${item.maxTemp}°C/${item.minTemp}°C"
+            tvData.text = item.time
+            tvCity.text = item.city
+            tvCurrenttemp.text = item.currentTemp.ifEmpty { maxMinTemp }
+            tvCondition.text = item.condition
+            tvMaxMin.text = if (item.currentTemp.isEmpty()) "" else maxMinTemp
+            Picasso.get().load("https:" + item.imageUrl).into(imWeather)
             progressBar.visibility = View.GONE
-
         }
 
+        Handler(Looper.getMainLooper()).post {
+            model.liveDataCurrent.value?.let {
+                model.liveDataCurrent.value = it
+            }
+        }
     }
-
     private fun permissionListener(){
         pLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()){
@@ -182,7 +192,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun requestWeatherData(city: String){
+    private fun requestWeatherData(city: String) {
         val url = "https://api.weatherapi.com/v1/forecast.json?key=" +
                 API_KEY +
                 "&q=" +
@@ -190,24 +200,33 @@ class MainFragment : Fragment() {
                 "&days=" +
                 "7" +
                 "&aqi=no&alerts=no"
-        val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                    result -> parseWeatherData(result)
-            },
-            {
-                    error -> Log.d("MyLog", "Error: $error")
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("MyLog", "Error: $e")
             }
 
-        )
-        queue.add(request)
+            override fun onResponse(call: Call, response: Response) {
+                val result = response.body?.string()
+                result?.let {
+                    parseWeatherData(it)
+                }
+            }
+        })
     }
 
     private fun displayCarWashRecommendation() {
         model.liveDataCarWashRecommendation.observe(viewLifecycleOwner) { recommendation ->
             binding.tvCarWashRecommendation.text = recommendation
+        }
+
+        Handler(Looper.getMainLooper()).post {
+            model.liveDataCarWashRecommendation.value = model.liveDataCarWashRecommendation.value
         }
     }
 
@@ -242,7 +261,7 @@ class MainFragment : Fragment() {
             )
             list.add(item)
         }
-        model.liveDataList.value = list
+        model.liveDataList.postValue(list)
         return list
     }
 
@@ -261,7 +280,7 @@ class MainFragment : Fragment() {
             weatherItem.chance_of_rain,
             weatherItem.chance_of_snow
         )
-        model.liveDataCurrent.value = item
+        model.liveDataCurrent.postValue(item)
 
     }
 
