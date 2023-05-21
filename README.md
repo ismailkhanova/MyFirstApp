@@ -26,11 +26,8 @@
 
 ## Скриншоты
 
+<p align="center">
 <img alt="Скриншот 2" src="(https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-30.jpg)"/>
-_Основной экран приложения, отображающий рекомендацию по мойке автомобиля и прогноз погоды_
-
 <img alt="Скриншот 2" src="https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-32.jpg" width="100"/>
-_Отображение экрана записи расходов_
-
 <img alt="Скриншот 3" src="https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-36.jpg" width="100"/>
-_Экран отображения карты_
+</p>
