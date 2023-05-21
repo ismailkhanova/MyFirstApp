@@ -26,11 +26,11 @@
 
 ## Скриншоты
 
-![Скриншот 1](C:\Users\User\Downloads\Telegram Desktop\photo_2023-05-21_19-57-36.jpg)
+![Скриншот 1](C:\Users\User\AndroidStudioProjects\MyFirstApp\readmefiles\photo_2023-05-21_19-57-36.jpg)
 _Основной экран приложения, отображающий рекомендацию по мойке автомобиля и прогноз погоды_
 
-![Скриншот 2](C:\Users\User\Downloads\Telegram Desktop\photo_2023-05-21_19-57-32.jpg)
+![Скриншот 2](C:\Users\User\AndroidStudioProjects\MyFirstApp\readmefiles\photo_2023-05-21_19-57-32.jpg)
 _Отображение экрана записи расходов_
 
-![Скриншот 3](C:\Users\User\Downloads\Telegram Desktop\photo_2023-05-21_19-57-30.jpg)
+![Скриншот 3](C:\Users\User\AndroidStudioProjects\MyFirstApp\readmefiles\photo_2023-05-21_19-57-30.jpg)
 _Экран отображения карты_
