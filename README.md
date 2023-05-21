@@ -27,7 +27,7 @@
 ## Скриншоты
 
 <p align="center">
-<img alt="Скриншот 2" src="(https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-30.jpg)"/>
+<img alt="Скриншот 1" src="(https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-30.jpg)" width="100"/>
 <img alt="Скриншот 2" src="https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-32.jpg" width="100"/>
 <img alt="Скриншот 3" src="https://github.com/ismailkhanova/MyFirstApp/blob/master/readmefiles/photo_2023-05-21_19-57-36.jpg" width="100"/>
 </p>
