@@ -30,4 +30,6 @@ class MainViewModel : ViewModel() {
 
         liveDataCarWashRecommendation.postValue(recommendation)
     }
+
+
 }
