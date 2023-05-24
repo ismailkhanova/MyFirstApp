@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="07/11/2022 23:30"
-                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,9 +107,23 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvCurrenttemp" />
 
             <TextView
+                android:id="@+id/tvPrecipitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45%"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@+id/tvMaxMin"
+                app:layout_constraintEnd_toEndOf="@+id/tvMaxMin"
+                app:layout_constraintStart_toStartOf="@+id/tvMaxMin"
+                app:layout_constraintTop_toBottomOf="@+id/tvCondition" />
+
+            <TextView
                 android:id="@+id/tvMaxMin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
                 android:text="3°C/-12°C"
                 android:textColor="#FFFFFF"

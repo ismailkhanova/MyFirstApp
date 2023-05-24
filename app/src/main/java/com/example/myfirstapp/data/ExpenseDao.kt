@@ -13,7 +13,8 @@ interface ExpenseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addExpense(expense: ExpenseEntity)
 
-    @Query("SELECT * FROM expense_table")
+    @Query("SELECT * FROM expense_table"
+    )
     fun getExpenses(): List<ExpenseEntity>
 
     @Delete

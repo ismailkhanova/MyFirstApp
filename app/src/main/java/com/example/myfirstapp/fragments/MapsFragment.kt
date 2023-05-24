@@ -33,23 +33,25 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.maps.android.PolyUtil
 import okhttp3.*
 import java.io.IOException
 import java.util.*
 
 
-class MapsFragment : Fragment(), OnMapReadyCallback {
+
+class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavigateListener {
 
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var carWashInfoFragment: CarWashInfoFragment
+    private var currentPolyline: Polyline? = null
 
-    private val apiKey = "AIzaSyAfktwnw6kIIU_7D8lO86HtnSthDjPk6oQ" // Замените на свой API ключ
+
+    private val apiKey = "AIzaSyAfktwnw6kIIU_7D8lO86HtnSthDjPk6oQ"
 
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
@@ -77,7 +79,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "PotentialBehaviorOverride")
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 
@@ -117,11 +119,71 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onNavigate(destination: LatLng) {
+        // Get the user's current location
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                val userLocation = LatLng(location.latitude, location.longitude)
+                getDirections(userLocation, destination)
+            }
+        }
+    }
+
+    override fun onCloseInfo() {
+        currentPolyline?.remove() // Remove the polyline when info fragment is closed
+    }
+
+    private fun getDirections(origin: LatLng, destination: LatLng) {
+        val str_origin = "origin=" + origin.latitude + "," + origin.longitude
+        val str_dest = "destination=" + destination.latitude + "," + destination.longitude
+        val parameters = "$str_origin&$str_dest&sensor=false&mode=driving&key=$apiKey"
+        val url = "https://maps.googleapis.com/maps/api/directions/json?$parameters"
+
+        val httpClient = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        httpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("MapsFragment", "Error getting directions: $e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+
+                    if (responseBody != null) {
+                        val gson = Gson()
+                        val jsonObject = gson.fromJson(responseBody, JsonObject::class.java)
+                        val routes = jsonObject.getAsJsonArray("routes")
+
+                        if (routes.size() > 0) {
+                            val route = routes.get(0).asJsonObject
+                            val polyline = route.get("overview_polyline").asJsonObject
+                            val points = polyline.get("points").asString
+
+                            activity?.runOnUiThread {
+                                val decodedPath = PolyUtil.decode(points)
+                                googleMap.addPolyline(PolylineOptions().addAll(decodedPath))
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("MapsFragment", "Error getting directions: ${response.code}")
+                }
+            }
+        })
+    }
+
+
 
     private fun fetchNearbyPlaces(location: LatLng, placeType: String) {
         val httpClient = OkHttpClient()
         val urlString =
-            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.latitude},${location.longitude}&radius=5000&type=$placeType&key=$apiKey"
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.latitude},${location.longitude}&radius=5000&type=$placeType&key=$apiKey&language=ru"
 
         val request = Request.Builder()
             .url(urlString)
@@ -149,15 +211,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                                 val lng = location.getAsJsonObject().get("lng").asDouble
                                 val address = result.getAsJsonObject().get("vicinity")?.asString
 
-                                val openingHours = null
-
                                 val rating = result.getAsJsonObject().get("rating")?.asFloat
 
                                 val place = PlaceResult(
                                     PlaceResult.Geometry(PlaceResult.Geometry.Location(lat, lng)),
                                     name,
                                     address,
-                                    openingHours,
                                     rating
                                 )
 

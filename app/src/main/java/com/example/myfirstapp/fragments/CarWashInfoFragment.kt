@@ -1,18 +1,25 @@
 package com.example.myfirstapp.fragments
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import com.example.myfirstapp.R
-import com.example.myfirstapp.adapters.OpeningHours
 import com.example.myfirstapp.adapters.PlaceResult
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_car_wash_info.*
 
 class CarWashInfoFragment : Fragment() {
+
+    // Define a listener to communicate with parent fragment/activity
+    interface OnNavigateListener {
+        fun onNavigate(destination: LatLng)
+        fun onCloseInfo()
+    }
+
+    private var navigateListener: OnNavigateListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,35 +37,48 @@ class CarWashInfoFragment : Fragment() {
         if (place != null) {
             car_wash_name.text = place.name
             car_wash_address.text = place.address
-            car_wash_hours.text = place.openingHours.toString()
             car_wash_rating.text = place.rating.toString()
+
+            // Set a click listener for the navigation button
+            navigation_button.setOnClickListener {
+                navigateListener?.onNavigate(
+                    LatLng(place.geometry.location.lat, place.geometry.location.lng)
+                )
+            }
+
+            // Set a click listener for the close button
+            close_button.setOnClickListener {
+                navigateListener?.onCloseInfo()
+            }
         }
     }
 
-    private fun formatOpeningHours(openingHours: OpeningHours?): String {
-        if (openingHours == null) {
-            return "N/A"
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
-        val sb = StringBuilder()
-        openingHours.weekdayText?.forEach { dayInfo ->
-            sb.append(dayInfo).append("\n")
+        val parentFragment = parentFragment
+        if (parentFragment is OnNavigateListener) {
+            navigateListener = parentFragment
+        } else {
+            throw RuntimeException("$parentFragment must implement OnNavigateListener")
         }
-        return sb.toString()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+
+        navigateListener = null
+    }
 
     companion object {
-        private const val ARG_PLACE = "arg_place"
+        private const val ARG_PLACE = "place"
 
-        fun newInstance(place: PlaceResult): CarWashInfoFragment {
-            val args = Bundle()
-            args.putParcelable(ARG_PLACE, place)
-
-            val fragment = CarWashInfoFragment()
-            fragment.arguments = args
-            return fragment
-        }
+        @JvmStatic
+        fun newInstance(place: PlaceResult) =
+            CarWashInfoFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_PLACE, place)
+                }
+            }
     }
 }
-

@@ -119,7 +119,7 @@ class ExpenseFragment : Fragment() {
             MainApplication.expenseDao?.addExpense(entity)
             expenseAdapter.add(expense)
 
-            Toast.makeText(requireContext(), "Expense saved!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Запись сохранена!", Toast.LENGTH_SHORT).show()
 
             amountEditText.setText("")
             noteEditText.setText("")
