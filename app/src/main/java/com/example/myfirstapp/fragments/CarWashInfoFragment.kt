@@ -49,6 +49,7 @@ class CarWashInfoFragment : Fragment() {
             // Set a click listener for the close button
             close_button.setOnClickListener {
                 navigateListener?.onCloseInfo()
+                parentFragmentManager.popBackStack()
             }
         }
     }
@@ -63,6 +64,8 @@ class CarWashInfoFragment : Fragment() {
             throw RuntimeException("$parentFragment must implement OnNavigateListener")
         }
     }
+
+    
 
     override fun onDetach() {
         super.onDetach()

@@ -53,9 +53,9 @@ class ExpenseListFragment : Fragment() {
         val totalExpense = MainApplication.expenseDao?.getTotalExpense()
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
-            .setTitle("Total Expense")
-            .setMessage("Total Expense: $totalExpense")
-            .setPositiveButton("Close") { dialog, _ ->
+            .setTitle("Общая сумма расходов")
+            .setMessage("Общая сумма расходов: $totalExpense")
+            .setPositiveButton("Закрыть") { dialog, _ ->
                 dialog.dismiss()
             }
 

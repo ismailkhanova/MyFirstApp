@@ -65,9 +65,9 @@ class MainFragment : Fragment() {
         ExpenseListFragment.newInstance(),
     )
     private val tList = listOf(
-        "Hours",
-        "Days",
-        "Expenses"
+        "Часы",
+        "Дни",
+        "Расходы"
     )
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var binding: FragmentMainBinding

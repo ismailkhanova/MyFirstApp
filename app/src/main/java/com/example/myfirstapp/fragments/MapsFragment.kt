@@ -17,10 +17,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -49,6 +52,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavig
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var carWashInfoFragment: CarWashInfoFragment
     private var currentPolyline: Polyline? = null
+    private var currentMarker: Marker? = null
 
 
     private val apiKey = "AIzaSyAfktwnw6kIIU_7D8lO86HtnSthDjPk6oQ"
@@ -131,7 +135,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavig
     }
 
     override fun onCloseInfo() {
-        currentPolyline?.remove() // Remove the polyline when info fragment is closed
+        currentMarker?.hideInfoWindow() // Hide the marker's info window
+        currentPolyline?.remove() // Remove the polyline
+
+        // Remove the reference to the current marker and polyline
+        currentMarker = null
+        currentPolyline = null
     }
 
     private fun getDirections(origin: LatLng, destination: LatLng) {
@@ -165,9 +174,17 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavig
                             val polyline = route.get("overview_polyline").asJsonObject
                             val points = polyline.get("points").asString
 
+//                            activity?.runOnUiThread {
+//                                val decodedPath = PolyUtil.decode(points)
+//                                currentPolyline = googleMap.addPolyline(PolylineOptions().addAll(decodedPath))
+//                            }
+
+
                             activity?.runOnUiThread {
                                 val decodedPath = PolyUtil.decode(points)
-                                googleMap.addPolyline(PolylineOptions().addAll(decodedPath))
+                                val polylineOptions = PolylineOptions().addAll(decodedPath)
+                                currentPolyline = googleMap.addPolyline(polylineOptions)
+                                animatePolyline(currentPolyline!!)
                             }
                         }
                     }
@@ -177,6 +194,42 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavig
             }
         })
     }
+
+    private fun animatePolyline(polyline: Polyline) {
+        val points = polyline.points
+        val handler = Handler()
+        val startTime = SystemClock.uptimeMillis()
+
+        val durationInMs = 1000L // длительность анимации в миллисекундах
+
+        val interpolator = LinearInterpolator()
+
+        handler.post(object : Runnable {
+            var counter = 0
+
+            override fun run() {
+                val elapsed = SystemClock.uptimeMillis() - startTime
+                val t = interpolator.getInterpolation(elapsed.toFloat() / durationInMs)
+
+                val size = (points.size * t).toInt()
+
+                if (size < points.size) {
+                    val finalPoints = ArrayList<LatLng>()
+
+                    for (i in 0 until size) {
+                        finalPoints.add(points[i])
+                    }
+
+                    polyline.points = finalPoints
+
+                    // Повторяем пока анимация не закончена
+                    handler.postDelayed(this, 1)
+                }
+            }
+        })
+    }
+
+
 
 
 
@@ -257,5 +310,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback, CarWashInfoFragment.OnNavig
             add(R.id.info_container, carWashInfoFragment)
             addToBackStack(null)
         }
+
+        currentMarker = googleMap.addMarker(
+            MarkerOptions().position(
+                LatLng(
+                    place.geometry.location.lat,
+                    place.geometry.location.lng
+                )
+            ).title(place.name)
+        )
+        currentMarker?.tag = place
+
+        // Remove the existing polyline (if any)
+        currentPolyline?.remove()
     }
 }
